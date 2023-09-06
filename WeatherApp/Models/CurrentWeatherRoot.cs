@@ -60,11 +60,6 @@ namespace WeatherApp.Models
         public string main { get; set; }
         public string description { get; set; }
         public string icon { get; set; }
-        //https://openweathermap.org/img/wn/10d@2x.png
-        public string iconUrl
-        {
-            get => $"https://openweathermap.org/img/wn/{icon}@2x.png";
-        }
     }
 
     public class Wind
