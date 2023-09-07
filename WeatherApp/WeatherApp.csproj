@@ -49,6 +49,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Resources\Images\WeatherIcons\**" />
+	  <Compile Remove="Resources\Images\WeatherIcons\**" />
+	  <EmbeddedResource Remove="Resources\Images\WeatherIcons\**" />
+	  <MauiCss Remove="Resources\Images\WeatherIcons\**" />
+	  <MauiImage Remove="Resources\Images\WeatherIcons\**" />
+	  <MauiXaml Remove="Resources\Images\WeatherIcons\**" />
+	  <None Remove="Resources\Images\WeatherIcons\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui.Maps" Version="1.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -62,7 +72,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Resources\Images\WeatherIcons\" />
+	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>

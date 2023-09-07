@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.Services
 {
-    public class FileService
+    public static class FileService
     {
         private static string savePath = string.Concat(FileSystem.Current.AppDataDirectory, "\\WeatherImages\\");
         private static string fileNamePrepend = "img";
         private static string fileNameAppend = "_2x.png";
 
-        public static string SaveIconToAppData(byte[] imageArray, string iconName)
+        public static string SaveIconToAppData(byte[] imageArray, string iconId)
         {
             string fullFilePath = string.Concat(savePath,
-                                                fileNamePrepend, 
-                                                iconName, 
+                                                fileNamePrepend,
+                                                iconId, 
                                                 fileNameAppend);
             try
             {
@@ -35,5 +35,32 @@ namespace WeatherApp.Services
                 return null;
             }
         }
+        public static bool isIconDownloaded(string iconId)
+        {
+            string fullFilePath = string.Concat(savePath,
+                                    fileNamePrepend,
+                                    iconId,
+                                    fileNameAppend);
+
+            if(File.Exists(fullFilePath))
+                return true;
+
+            return false;
+
+        }
+
+        public static string GetIconPath(string iconId)
+        {
+            string fullFilePath = string.Concat(savePath,
+                                    fileNamePrepend,
+                                    iconId,
+                                    fileNameAppend);
+
+            if (File.Exists(fullFilePath))
+                return fullFilePath;
+
+            return null;
+        }
     }
+
 }

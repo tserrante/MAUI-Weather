@@ -70,9 +70,17 @@ namespace WeatherApp.ViewModels
                         WeatherDescription = weatherObject.weather[0].description;
                         string weatherIcon = weatherObject.weather[0].icon;
 
-                        // current weather icon
-                        byte[] imageByteArray = await apiService.GetWeatherImageFromIconCode(weatherIcon);
-                        WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherIcon);
+                        if(!FileService.isIconDownloaded(weatherIcon)) 
+                        { 
+                            // current weather icon
+                            byte[] imageByteArray = await apiService.GetWeatherImageFromIconCode(weatherIcon);
+                            WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherIcon);
+                        }
+                        else
+                        {
+                            WeatherImagePath = FileService.GetIconPath(weatherIcon);
+                        }
+                            
                     }
                     else
                     {
