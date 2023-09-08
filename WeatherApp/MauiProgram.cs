@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using WeatherApp.Pages;
 using WeatherApp.ViewModels;
-using WeatherApp.Views;
 namespace WeatherApp;
 
 public static class MauiProgram
@@ -19,22 +19,26 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-		//AddView<CurrentWeatherView, CurrentWeatherViewModel>(builder.Services, "currentweather");
+		builder.Services.AddTransient<AppShellViewModel>();
+		builder.Services.AddTransient<AppShell>();
+		
+		AddPage<CurrentWeatherPage, CurrentWeatherViewModel>(builder.Services, "currentweather");
+		
 		return builder.Build();
 	}
 
-    //private static IServiceCollection AddView<TView, TViewModel>(
-    //    IServiceCollection services,
-    //    string route)
-    //    where TView : View
-    //    where TViewModel : BaseViewModel
-    //{
-    //    services
-    //        .AddTransient(typeof(TView))
-    //        .AddTransient(typeof(TViewModel));
+	private static IServiceCollection AddPage<TPage, TViewModel>(
+		IServiceCollection services,
+		string route)
+		where TPage : Page
+		where TViewModel : BaseViewModel
+	{
+		services
+			.AddTransient(typeof(TPage))
+			.AddTransient(typeof(TViewModel));
 
-    //    Routing.RegisterRoute(route, typeof(TView));
+		Routing.RegisterRoute(route, typeof(TPage));
 
-    //    return services;
-    //}
+		return services;
+	}
 }

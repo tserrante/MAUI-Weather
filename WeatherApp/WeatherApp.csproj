@@ -66,13 +66,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\CurrentWeatherView.xaml.cs">
-	    <DependentUpon>CurrentWeatherView.xaml</DependentUpon>
-	  </Compile>
+	  <Folder Include="Resources\Images\" />
+	  <Folder Include="Views\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Resources\Images\" />
+	  <MauiXaml Update="Pages\CurrentWeatherPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
