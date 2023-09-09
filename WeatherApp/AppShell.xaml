@@ -10,4 +10,8 @@
     <ShellContent
         ContentTemplate="{DataTemplate pages:CurrentWeatherPage}"
         Route="CurrentWeatherPage" />
+	<ShellContent 
+        ContentTemplate="{DataTemplate pages:WeatherForecastPage}"
+		Route="WeatherForecast" />
+
 </Shell>

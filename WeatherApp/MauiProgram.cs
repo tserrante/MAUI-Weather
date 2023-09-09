@@ -23,7 +23,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<AppShell>();
 		
 		AddPage<CurrentWeatherPage, CurrentWeatherViewModel>(builder.Services, "currentweather");
-		
+		AddPage<WeatherForecastPage, WeatherForecastViewModel>(builder.Services, "weatherforecast");
+
 		return builder.Build();
 	}
 
