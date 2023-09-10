@@ -1,5 +1,6 @@
 ﻿using WeatherApp.Services;
 using WeatherApp.Models.ForecastWeatherModel;
+using ForecastData = WeatherApp.Models.WeatherDataObject;
 using System.Collections.ObjectModel;
 
 namespace WeatherApp.ViewModels
@@ -9,21 +10,17 @@ namespace WeatherApp.ViewModels
 
         private string zipCode;
         private string cityName;
-        private string weatherDescription;
-        private string weatherImagePath;
 
         private Root weatherForecastRoot;
-        
-        public ObservableCollection<Weather> WeatherForecast;
+
+        public ObservableCollection<ForecastData> WeatherForecast { get; private set; } = new ObservableCollection<ForecastData>();
         
         public ForecastWeatherViewModel()
         {
             weatherForecastRoot = new Root();
-            WeatherForecast = new ObservableCollection<Weather>();
+            WeatherForecast = new ObservableCollection<ForecastData>();
             zipCode = string.Empty;
             cityName = "Please Enter Zip Code";
-            weatherDescription = string.Empty;
-            weatherImagePath = string.Empty;
         }
 
         public string ZipCode
@@ -46,57 +43,26 @@ namespace WeatherApp.ViewModels
                 SetProperty(ref cityName, value);
             }
         }
-
-        public string WeatherDescription
-        {
-            get => weatherDescription;
-            set
-            {
-                SetProperty(ref weatherDescription, value);
-            }
-        }
-
-        public string WeatherImagePath
-        {
-            get => weatherImagePath;
-            set
-            {
-                SetProperty(ref weatherImagePath, value);
-            }
-        }
-
         private async void QueryApi()
         {
             if (int.TryParse(zipCode, out var convertedZipCode))
             {
-                var weatherObject = await ApiService.GetWeatherForecast(convertedZipCode);
-                if (weatherObject != null)
+                weatherForecastRoot = await ApiService.GetWeatherForecast(convertedZipCode);
+                if (weatherForecastRoot != null)
                 {
-                    CityName = weatherObject.city.name;
+                    CityName = weatherForecastRoot.city.name;
                     
-                    foreach(var weatherReport in weatherObject.list)
+                    foreach(var weatherReport in weatherForecastRoot.list)
                     {
                         foreach(var hourlyWeatherReport in weatherReport.weather)
                         {
-                            WeatherForecast.Add(hourlyWeatherReport);
+                            WeatherForecast.Add(new ForecastData(hourlyWeatherReport.description, hourlyWeatherReport.icon));
                         }
-                    }
-
-                    if (!FileService.isIconDownloaded(weatherIcon))
-                    {
-                        // current weather icon
-                        byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherIcon);
-                        WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherIcon);
-                    }
-                    else
-                    {
-                        WeatherImagePath = FileService.GetIconPath(weatherIcon);
                     }
                 }
                 else
                 {
                     CityName = "Cannot locate city/region by zip code";
-                    WeatherDescription = "Enter a correct zip code";
                 }
             }
         }
