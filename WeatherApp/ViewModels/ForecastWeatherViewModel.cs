@@ -1,26 +1,28 @@
-﻿using WeatherApp.Models.CurrentWeatherModel;
-using WeatherApp.Services;
-using static System.Net.WebRequestMethods;
+﻿using WeatherApp.Services;
+using WeatherApp.Models.ForecastWeatherModel;
+using System.Collections.ObjectModel;
 
 namespace WeatherApp.ViewModels
 {
-    public class CurrentWeatherViewModel : BaseViewModel
+    public class ForecastWeatherViewModel : BaseViewModel
     {
+
         private string zipCode;
         private string cityName;
         private string weatherDescription;
-        private string weatherIcon;
         private string weatherImagePath;
 
-        private Root currentWeather;
-
-        public CurrentWeatherViewModel()
+        private Root weatherForecastRoot;
+        
+        public ObservableCollection<Weather> WeatherForecast;
+        
+        public ForecastWeatherViewModel()
         {
-            currentWeather = new Root();
+            weatherForecastRoot = new Root();
+            WeatherForecast = new ObservableCollection<Weather>();
             zipCode = string.Empty;
             cityName = "Please Enter Zip Code";
             weatherDescription = string.Empty;
-            weatherIcon = string.Empty;
             weatherImagePath = string.Empty;
         }
 
@@ -30,8 +32,7 @@ namespace WeatherApp.ViewModels
             set
             {
                 SetProperty(ref zipCode, value);
-
-                if(zipCode.Length == 5)
+                if (zipCode.Length == 5)
                 {
                     QueryApi();
                 }
@@ -40,8 +41,8 @@ namespace WeatherApp.ViewModels
         public string CityName
         {
             get => cityName;
-            set 
-            { 
+            set
+            {
                 SetProperty(ref cityName, value);
             }
         }
@@ -57,7 +58,7 @@ namespace WeatherApp.ViewModels
 
         public string WeatherImagePath
         {
-            get=> weatherImagePath; 
+            get => weatherImagePath;
             set
             {
                 SetProperty(ref weatherImagePath, value);
@@ -66,18 +67,23 @@ namespace WeatherApp.ViewModels
 
         private async void QueryApi()
         {
-            if(int.TryParse(zipCode, out var convertedZipCode))
+            if (int.TryParse(zipCode, out var convertedZipCode))
             {
-                currentWeather = await ApiService.GetCurrentWeather(convertedZipCode);
-
-                if(currentWeather != null)
+                var weatherObject = await ApiService.GetWeatherForecast(convertedZipCode);
+                if (weatherObject != null)
                 {
-                    CityName = currentWeather.name;
-                    WeatherDescription = currentWeather.weather[0].description;
-                    weatherIcon = currentWeather.weather[0].icon;
+                    CityName = weatherObject.city.name;
+                    
+                    foreach(var weatherReport in weatherObject.list)
+                    {
+                        foreach(var hourlyWeatherReport in weatherReport.weather)
+                        {
+                            WeatherForecast.Add(hourlyWeatherReport);
+                        }
+                    }
 
-                    if(!FileService.isIconDownloaded(weatherIcon)) 
-                    { 
+                    if (!FileService.isIconDownloaded(weatherIcon))
+                    {
                         // current weather icon
                         byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherIcon);
                         WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherIcon);
@@ -85,7 +91,7 @@ namespace WeatherApp.ViewModels
                     else
                     {
                         WeatherImagePath = FileService.GetIconPath(weatherIcon);
-                    }         
+                    }
                 }
                 else
                 {
@@ -95,4 +101,5 @@ namespace WeatherApp.ViewModels
             }
         }
     }
+
 }

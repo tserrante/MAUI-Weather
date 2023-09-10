@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace WeatherApp.Services
 {
     public static class FileService
@@ -25,7 +20,7 @@ namespace WeatherApp.Services
                     Directory.CreateDirectory(savePath);
                 }
 
-                System.IO.File.WriteAllBytes(fullFilePath, imageArray);
+                File.WriteAllBytes(fullFilePath, imageArray);
 
                 return fullFilePath;
             }
