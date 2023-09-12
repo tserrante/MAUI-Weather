@@ -2,6 +2,7 @@
 using WeatherApp.Models.ForecastWeatherModel;
 using ForecastData = WeatherApp.Models.WeatherDataObject;
 using System.Collections.ObjectModel;
+using WeatherApp.Pages;
 
 namespace WeatherApp.ViewModels
 {
@@ -18,7 +19,6 @@ namespace WeatherApp.ViewModels
         public ForecastWeatherViewModel()
         {
             weatherForecastRoot = new Root();
-            WeatherForecast = new ObservableCollection<ForecastData>();
             zipCode = string.Empty;
             cityName = "Please Enter Zip Code";
         }
@@ -48,17 +48,34 @@ namespace WeatherApp.ViewModels
             if (int.TryParse(zipCode, out var convertedZipCode))
             {
                 weatherForecastRoot = await ApiService.GetWeatherForecast(convertedZipCode);
+                
                 if (weatherForecastRoot != null)
                 {
                     CityName = weatherForecastRoot.city.name;
                     
+                    List<ForecastData> preparationList = new List<ForecastData>();
+
                     foreach(var weatherReport in weatherForecastRoot.list)
                     {
-                        foreach(var hourlyWeatherReport in weatherReport.weather)
+                        foreach(var report in weatherReport.weather)
                         {
-                            WeatherForecast.Add(new ForecastData(hourlyWeatherReport.description, hourlyWeatherReport.icon));
+                            ForecastData weatherDataObject = new ForecastData(report.description, report.icon);
+
+                            if (!FileService.isIconDownloaded(weatherDataObject.WeatherIcon))
+                            {
+                                byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherDataObject.WeatherIcon);
+                                weatherDataObject.WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherDataObject.WeatherIcon);
+                            }
+                            else
+                            {
+                                weatherDataObject.WeatherImagePath = FileService.GetIconPath(weatherDataObject.WeatherIcon);
+                            }
+
+                            preparationList.Add(weatherDataObject);
                         }
                     }
+                    WeatherForecast = new ObservableCollection<ForecastData>(preparationList);
+                    OnPropertyChanged(nameof(WeatherForecast));
                 }
                 else
                 {

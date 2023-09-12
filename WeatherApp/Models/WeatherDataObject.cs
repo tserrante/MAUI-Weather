@@ -7,7 +7,7 @@ using WeatherApp.Services;
 
 namespace WeatherApp.Models
 {
-    public class WeatherDataObject
+    public class WeatherDataObject : IComparable
     {
         private string weatherDescription;
         private string weatherIcon;
@@ -15,15 +15,14 @@ namespace WeatherApp.Models
 
         public WeatherDataObject()
         {
-            weatherDescription = string.Empty;
-            weatherIcon = string.Empty;
-            weatherImagePath = string.Empty;
+            WeatherDescription = string.Empty;
+            WeatherIcon = string.Empty;
+            WeatherImagePath = string.Empty;
         }
         public WeatherDataObject(string weatherDescription, string weatherIcon)
         {
             this.weatherDescription = weatherDescription;
             this.weatherIcon = weatherIcon;
-            Task.Run(async () => { WeatherImagePath = await FetchIcon(); });
         }
 
         public string WeatherDescription
@@ -34,10 +33,7 @@ namespace WeatherApp.Models
         public string WeatherIcon
         {
             get => weatherIcon;
-            set
-            {
-                weatherIcon = value;
-            }
+            set => weatherIcon = value;
         }
         public string WeatherImagePath
         {
@@ -45,17 +41,9 @@ namespace WeatherApp.Models
             set => weatherImagePath = value;
         }
 
-        private async Task<string> FetchIcon()
+        public int CompareTo(object obj)
         {
-            if (!FileService.isIconDownloaded(weatherIcon))
-            {
-                byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherIcon);
-                return FileService.SaveIconToAppData(imageByteArray, weatherIcon);
-            }
-
-            return FileService.GetIconPath(weatherIcon);
-            
+            return weatherDescription.CompareTo(obj);
         }
-            
     }
 }

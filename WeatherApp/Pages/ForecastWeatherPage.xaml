@@ -23,7 +23,8 @@
 
 		<CollectionView	ItemsSource="{Binding WeatherForecast}"
 						ItemsLayout="HorizontalList"
-						HorizontalScrollBarVisibility="Always">
+						HorizontalScrollBarVisibility="Always"
+						HeightRequest="400">
 			<CollectionView.ItemTemplate>
 				<DataTemplate>
 					<VerticalStackLayout	Margin="20"
@@ -35,12 +36,11 @@
 							   Text="{Binding WeatherDescription}" />
 						<Image Source="{Binding WeatherImagePath}"
 							   Aspect="AspectFit"
-							   MaximumHeightRequest="100"
-							   MaximumWidthRequest="100" />
+							   MaximumHeightRequest="150"
+							   MaximumWidthRequest="150" />
 					</VerticalStackLayout>
 				</DataTemplate>
 			</CollectionView.ItemTemplate>
-
 		</CollectionView>
 	</VerticalStackLayout>
 </ContentPage>
