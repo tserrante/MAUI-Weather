@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<VerticalStackLayout xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WeatherApp.Pages.ForecastWeatherPage"
-             Title="5-Day Forecast">
-
-	<VerticalStackLayout Margin="20"
-						 Spacing="40">
+             x:Class="WeatherApp.Views.ForecastWeatherView"
+             xmlns:viewmodels="clr-namespace:WeatherApp.ViewModels"
+             Margin="10"
+			 Spacing="10">
 
 		<Entry Placeholder="ZIP"
 			   Text="{Binding ZipCode}"
 			   MaxLength="5"
 			   WidthRequest="200"
-			   HeightRequest="40"
-			   HorizontalOptions="Center"
-			   VerticalOptions="Center"
+			   HeightRequest="20"
+			   HorizontalOptions="Start"
+			   VerticalOptions="Start"
 			   ClearButtonVisibility="WhileEditing" />
 		<Label x:Name="CityLabel"
-			   FontSize="40"
-			   HorizontalOptions="Center"
+			   FontSize="Small"
+			   HorizontalOptions="Start"
 			   TextColor="Gray"
 			   Text="{Binding CityName}" />
 
 		<CollectionView	ItemsSource="{Binding WeatherForecast}"
 						ItemsLayout="HorizontalList"
 						HorizontalScrollBarVisibility="Always"
-						HeightRequest="400">
+						HeightRequest="200">
 			<CollectionView.ItemTemplate>
 				<DataTemplate>
-					<VerticalStackLayout	Margin="20"
-											Spacing="40">
+					<VerticalStackLayout	Margin="10"
+											Spacing="10">
 						<Label x:Name="WeatherDescriptionLabel"
-							   FontSize="Medium"
-							   HorizontalOptions="Center"
+							   FontSize="Small"
+							   HorizontalOptions="Start"
 							   TextColor="SlateGray"
 							   Text="{Binding WeatherDescription}" />
 						<Image Source="{Binding WeatherImagePath}"
+                               HorizontalOptions="Start"
 							   Aspect="AspectFit"
-							   MaximumHeightRequest="150"
-							   MaximumWidthRequest="150" />
+							   MaximumHeightRequest="100"
+							   MaximumWidthRequest="100" />
 					</VerticalStackLayout>
 				</DataTemplate>
 			</CollectionView.ItemTemplate>
 		</CollectionView>
-	</VerticalStackLayout>
-</ContentPage>
+</VerticalStackLayout>

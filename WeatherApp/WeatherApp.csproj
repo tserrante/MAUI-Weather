@@ -59,6 +59,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Views\CurrentWeatherView-OLD.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="Views\CurrentWeatherView-OLD.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui.Maps" Version="1.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -67,20 +75,25 @@
 
 	<ItemGroup>
 	  <Folder Include="Resources\Images\" />
-	  <Folder Include="Views\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\ForecastWeatherPage.xaml.cs">
-	    <DependentUpon>ForecastWeatherPage.xaml</DependentUpon>
+	  <Compile Update="Pages\MainPage.xaml.cs">
+	    <DependentUpon>MainPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\ForecastView.xaml.cs">
+	    <DependentUpon>ForecastView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\CurrentWeatherPage.xaml">
+	  <MauiXaml Update="Pages\MainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\ForecastWeatherPage.xaml">
+	  <MauiXaml Update="Views\CurrentWeatherView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ForecastView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

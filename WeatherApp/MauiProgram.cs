@@ -22,8 +22,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<AppShellViewModel>();
 		builder.Services.AddTransient<AppShell>();
 		
-		AddPage<CurrentWeatherPage, CurrentWeatherViewModel>(builder.Services, "currentweather");
-		AddPage<ForecastWeatherPage, ForecastWeatherViewModel>(builder.Services, "forecastweather");
+		//AddPage<CurrentWeatherPage, CurrentWeatherViewModel>(builder.Services, "currentweather");
+		//AddPage<ForecastWeatherPage, ForecastWeatherViewModel>(builder.Services, "forecastweather");
 
 		return builder.Build();
 	}

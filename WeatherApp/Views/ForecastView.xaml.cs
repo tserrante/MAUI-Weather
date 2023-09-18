@@ -1,10 +1,11 @@
 using WeatherApp.ViewModels;
 
-namespace WeatherApp.Pages;
+namespace WeatherApp.Views;
 
-public partial class ForecastWeatherPage : ContentPage
+public partial class ForecastWeatherView : VerticalStackLayout
 {
-	public ForecastWeatherPage(ForecastWeatherViewModel forecastWeatherViewModel)
+	ForecastWeatherViewModel forecastWeatherViewModel;
+	public ForecastWeatherView()
 	{
 		InitializeComponent();
 

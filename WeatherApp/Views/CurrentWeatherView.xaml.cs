@@ -1,17 +1,14 @@
-﻿using WeatherApp.Services;
-
 using WeatherApp.ViewModels;
 
 namespace WeatherApp.Views;
 
-public partial class CurrentWeatherView : ContentPage
+public partial class CurrentWeatherView : VerticalStackLayout
 {
-    CurrentWeatherViewModel currentWeatherViewModel;
-    public CurrentWeatherView(/*CurrentWeatherViewModel currentWeatherViewModel*/)
+	CurrentWeatherViewModel currentWeatherViewModel;
+	public CurrentWeatherView()
 	{
 		InitializeComponent();
-        currentWeatherViewModel = new CurrentWeatherViewModel();
-        BindingContext = currentWeatherViewModel;
+		currentWeatherViewModel = new CurrentWeatherViewModel();
+		BindingContext = currentWeatherViewModel;
 	}
 }
-

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:viewmodels="clr-namespace:WeatherApp.ViewModels"
+             x:Class="WeatherApp.Views.CurrentWeatherView"	>
+
+    <VerticalStackLayout Margin="20"
+						Spacing="40">
+
+        <Entry Placeholder="ZIP"
+			   Text="{Binding ZipCode}"
+			   MaxLength="5"
+			   WidthRequest="200"
+			   HeightRequest="40"
+			   HorizontalOptions="Center"
+			   VerticalOptions="Center"
+			   ClearButtonVisibility="WhileEditing"	/>
+        <Label x:Name="CityLabel" 
+               FontSize="40" 
+               HorizontalOptions="Center" 
+               TextColor="Gray" 
+			   Text="{Binding CityName}" />
+        <Label x:Name="WeatherDescriptionLabel"
+			   FontSize="Medium"
+			   HorizontalOptions="Center"
+			   TextColor="SlateGray"
+			   Text="{Binding WeatherDescription}" />
+        <Image Source="{Binding WeatherImagePath}"
+				Aspect="AspectFit"
+               MaximumHeightRequest="100"
+               MaximumWidthRequest="100"	/>
+    </VerticalStackLayout>
+</ContentPage>
