@@ -2,8 +2,24 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WeatherApp.Pages.MainPage"    
-             xmlns:views="clr-namespace:WeatherApp.Views">
+             xmlns:views="clr-namespace:WeatherApp.Views"
+             xmlns:viewmodels="clr-namespace:WeatherApp.ViewModels"
+             x:DataType="viewmodels:MainPageViewModel"  >
+    
     <VerticalStackLayout>
+        <!--<Entry Placeholder="ZIP"
+			   Text="{Binding ZipCode}"
+			   MaxLength="5"
+			   WidthRequest="200"
+			   HeightRequest="20"
+			   HorizontalOptions="Start"
+			   VerticalOptions="Start"
+			   ClearButtonVisibility="WhileEditing" />
+        <Label x:Name="CityLabel"
+			   FontSize="Small"
+			   HorizontalOptions="Start"
+			   TextColor="Gray"
+			   Text="{Binding CityName}" />-->
         <Label Text="Current Weather"/>
         <views:CurrentWeatherView/>
         <Label Text="Forecast"/>

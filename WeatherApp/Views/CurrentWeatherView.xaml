@@ -3,7 +3,8 @@
 			 xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:viewmodels="clr-namespace:WeatherApp.ViewModels"
-             x:Class="WeatherApp.Views.CurrentWeatherView"	
+             x:Class="WeatherApp.Views.CurrentWeatherView"
+			 x:DataType="viewmodels:CurrentWeatherViewModel"
 			 Margin="10"
 	   		 Spacing="10" >
     
@@ -28,9 +29,9 @@
 			   HorizontalOptions="Start"
 			   TextColor="SlateGray"
 			   Text="{Binding WeatherDescription}" />
-		<Image Source="{Binding WeatherImagePath}"
+		<Image Source="{Binding IconPath}"
 			   Aspect="AspectFit"
                HorizontalOptions="Start"
-               MaximumHeightRequest="100"
-               MaximumWidthRequest="100"	/>
+               HeightRequest="150"
+               WidthRequest="150"	/>
 </VerticalStackLayout>

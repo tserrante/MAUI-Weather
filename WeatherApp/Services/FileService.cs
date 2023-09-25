@@ -30,7 +30,7 @@ namespace WeatherApp.Services
                 return null;
             }
         }
-        public static bool isIconDownloaded(string iconId)
+        public static bool IsIconDownloaded(string iconId)
         {
             string fullFilePath = string.Concat(savePath,
                                     fileNamePrepend,

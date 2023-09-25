@@ -1,6 +1,6 @@
-﻿using WeatherApp.Models.CurrentWeatherModel;
+﻿using CurrentWeatherRoot = WeatherApp.Models.CurrentWeatherModel.Root;
+using WeatherApp.Models;
 using WeatherApp.Services;
-using static System.Net.WebRequestMethods;
 
 namespace WeatherApp.ViewModels
 {
@@ -9,19 +9,17 @@ namespace WeatherApp.ViewModels
         private string zipCode;
         private string cityName;
         private string weatherDescription;
-        private string weatherIcon;
-        private string weatherImagePath;
+        private string iconPath;
 
-        private Root currentWeather;
+        private BaseWeatherObject weatherObject;
 
         public CurrentWeatherViewModel()
         {
-            currentWeather = new Root();
+            weatherObject = new BaseWeatherObject(); //= new BaseWeatherObject();
             zipCode = string.Empty;
-            cityName = "Please Enter Zip Code";
+            cityName = string.Empty;
             weatherDescription = string.Empty;
-            weatherIcon = string.Empty;
-            weatherImagePath = string.Empty;
+            iconPath = string.Empty;
         }
 
         public string ZipCode
@@ -45,52 +43,51 @@ namespace WeatherApp.ViewModels
                 SetProperty(ref cityName, value);
             }
         }
-
+        public BaseWeatherObject WeatherObject
+        {
+            get => weatherObject;
+            set => SetProperty(ref weatherObject, value);
+        }
         public string WeatherDescription
         {
-            get => weatherDescription;
+            //get => weatherDescription;
+            get => weatherObject.WeatherDescription;
             set
             {
                 SetProperty(ref weatherDescription, value);
+                SetProperty(ref weatherObject.GetWeatherDescriptionByRef(), value);
             }
         }
 
-        public string WeatherImagePath
+        public string IconPath
         {
-            get=> weatherImagePath; 
+            //get => iconPath;
+            get => weatherObject.IconPath;
             set
             {
-                SetProperty(ref weatherImagePath, value);
+                //SetProperty(ref iconPath, value);
+                SetProperty(ref weatherObject.GetIconPathByRef(), value);
             }
         }
+
 
         private async void QueryApi()
         {
             if(int.TryParse(zipCode, out var convertedZipCode))
             {
-                currentWeather = await ApiService.GetCurrentWeather(convertedZipCode);
+                var currentWeather = await ApiService.GetCurrentWeather(convertedZipCode);
 
                 if(currentWeather != null)
                 {
                     CityName = currentWeather.name;
                     WeatherDescription = currentWeather.weather[0].description;
-                    weatherIcon = currentWeather.weather[0].icon;
-
-                    if(!FileService.isIconDownloaded(weatherIcon)) 
-                    { 
-                        // current weather icon
-                        byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherIcon);
-                        WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherIcon);
-                    }
-                    else
-                    {
-                        WeatherImagePath = FileService.GetIconPath(weatherIcon);
-                    }         
+                    weatherObject.WeatherIcon = currentWeather.weather[0].icon;
+                    IconPath = weatherObject.IconPath;
                 }
                 else
                 {
-                    CityName = "Cannot locate city/region by zip code";
-                    WeatherDescription = "Enter a correct zip code";
+                    CityName = string.Empty;
+                    WeatherDescription = string.Empty;
                 }
             }
         }

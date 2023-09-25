@@ -33,7 +33,7 @@
 							   HorizontalOptions="Start"
 							   TextColor="SlateGray"
 							   Text="{Binding WeatherDescription}" />
-						<Image Source="{Binding WeatherImagePath}"
+						<Image Source="{Binding IconPath}"
                                HorizontalOptions="Start"
 							   Aspect="AspectFit"
 							   MaximumHeightRequest="100"

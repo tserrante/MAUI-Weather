@@ -7,14 +7,7 @@
     xmlns:pages="clr-namespace:WeatherApp.Pages"
     Shell.FlyoutBehavior="Flyout">
 
-    <!--<ShellContent
-        ContentTemplate="{DataTemplate pages:CurrentWeatherPage}"
-        Route="CurrentWeatherPage" />
-	<ShellContent 
-        ContentTemplate="{DataTemplate pages:ForecastWeatherPage}"
-		Route="ForecastWeatherPage" />-->
     <ShellContent
-        ContentTemplate="{DataTemplate pages:MainPage}"
-        Route="MainPage"   />
+        ContentTemplate="{DataTemplate pages:MainPage}"/>
 
 </Shell>

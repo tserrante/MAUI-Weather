@@ -1,8 +1,7 @@
 ﻿using WeatherApp.Services;
-using WeatherApp.Models.ForecastWeatherModel;
-using ForecastData = WeatherApp.Models.WeatherDataObject;
+using ForecastWeatherRoot = WeatherApp.Models.ForecastWeatherModel.Root;
+using WeatherApp.Models;
 using System.Collections.ObjectModel;
-using WeatherApp.Pages;
 
 namespace WeatherApp.ViewModels
 {
@@ -12,15 +11,12 @@ namespace WeatherApp.ViewModels
         private string zipCode;
         private string cityName;
 
-        private Root weatherForecastRoot;
-
-        public ObservableCollection<ForecastData> WeatherForecast { get; private set; } = new ObservableCollection<ForecastData>();
+        public ObservableCollection<BaseWeatherObject> WeatherForecast { get; private set; } = new ObservableCollection<BaseWeatherObject>();
         
         public ForecastWeatherViewModel()
         {
-            weatherForecastRoot = new Root();
             zipCode = string.Empty;
-            cityName = "Please Enter Zip Code";
+            cityName = string.Empty;
         }
 
         public string ZipCode
@@ -47,39 +43,30 @@ namespace WeatherApp.ViewModels
         {
             if (int.TryParse(zipCode, out var convertedZipCode))
             {
-                weatherForecastRoot = await ApiService.GetWeatherForecast(convertedZipCode);
+                var weatherForecastRoot = await ApiService.GetWeatherForecast(convertedZipCode);
                 
                 if (weatherForecastRoot != null)
                 {
                     CityName = weatherForecastRoot.city.name;
-                    
-                    List<ForecastData> preparationList = new List<ForecastData>();
 
+                    WeatherForecast.Clear();
+
+                    WeatherForecast = new ObservableCollection<BaseWeatherObject>();
                     foreach(var weatherReport in weatherForecastRoot.list)
                     {
                         foreach(var report in weatherReport.weather)
                         {
-                            ForecastData weatherDataObject = new ForecastData(report.description, report.icon);
+                            BaseWeatherObject weatherDataObject = new BaseWeatherObject(report.description, report.icon);
 
-                            if (!FileService.isIconDownloaded(weatherDataObject.WeatherIcon))
-                            {
-                                byte[] imageByteArray = await ApiService.GetWeatherImageFromIconCode(weatherDataObject.WeatherIcon);
-                                weatherDataObject.WeatherImagePath = FileService.SaveIconToAppData(imageByteArray, weatherDataObject.WeatherIcon);
-                            }
-                            else
-                            {
-                                weatherDataObject.WeatherImagePath = FileService.GetIconPath(weatherDataObject.WeatherIcon);
-                            }
-
-                            preparationList.Add(weatherDataObject);
+                            WeatherForecast.Add(weatherDataObject);
                         }
                     }
-                    WeatherForecast = new ObservableCollection<ForecastData>(preparationList);
                     OnPropertyChanged(nameof(WeatherForecast));
                 }
                 else
                 {
-                    CityName = "Cannot locate city/region by zip code";
+                    ZipCode = string.Empty;
+                    CityName = string.Empty;
                 }
             }
         }
