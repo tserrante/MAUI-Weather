@@ -1,9 +1,11 @@
-﻿using CurrentWeatherRoot = WeatherApp.Models.CurrentWeatherModel.Root;
-using WeatherApp.Models;
+﻿using WeatherApp.Models;
 using WeatherApp.Services;
 
 namespace WeatherApp.ViewModels
 {
+    /**
+     * Refactor this later to have the view pull from weatherObject, not from local fields.
+     */
     public class CurrentWeatherViewModel : BaseViewModel
     {
         private string zipCode;
@@ -50,8 +52,8 @@ namespace WeatherApp.ViewModels
         }
         public string WeatherDescription
         {
-            //get => weatherDescription;
-            get => weatherObject.WeatherDescription;
+            get => weatherDescription;
+            //get => weatherObject.WeatherDescription;
             set
             {
                 SetProperty(ref weatherDescription, value);
@@ -61,11 +63,11 @@ namespace WeatherApp.ViewModels
 
         public string IconPath
         {
-            //get => iconPath;
-            get => weatherObject.IconPath;
+            get => iconPath;
+            //get => weatherObject.IconPath;
             set
             {
-                //SetProperty(ref iconPath, value);
+                SetProperty(ref iconPath, value);
                 SetProperty(ref weatherObject.GetIconPathByRef(), value);
             }
         }
